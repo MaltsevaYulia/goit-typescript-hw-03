@@ -2,10 +2,7 @@
 //в якому людина приходить додому.
 
 class Key {
-    private signature: number ;
-    constructor() {
-        this.signature = Math.random();
-    }
+  private signature: number = Math.random();
 
   public getSignature(): number {
     return this.signature;
@@ -16,11 +13,11 @@ class Key {
 //    який повертає збережений ключ.
 
 class Person {
-  private key: Key;
-  constructor(key: Key) {
-    this.key = key;
-  }
-  getKey() {
+  // private key: Key;
+
+  constructor(private key: Key) {}
+
+  getKey(): Key {
     return this.key;
   }
 }
@@ -33,14 +30,11 @@ class Person {
 
 abstract class House {
   protected door: boolean = false;
-  protected key: Key;
   protected tenants: Person[] = [];
 
-  constructor(key: Key) {
-    this.key = key;
-  }
+  constructor(protected key: Key) {}
 
-  public comeIn(person: Person) {
+  public comeIn(person: Person): void {
     if (this.door) this.tenants.push(person);
   }
   public abstract openDoor(personKey: Key): void;
@@ -50,10 +44,9 @@ abstract class House {
 //береженим як key, то двері відчиняються.
 
 class MyHouse extends House {
-  public openDoor(personKey: Key) {
-    personKey.getSignature() === this.key.getSignature()
-      ? (this.door = true)
-      : (this.door = false);
+  public openDoor(personKey: Key): void {
+    this.door =
+      personKey.getSignature() === this.key.getSignature() ? true : false;
   }
 }
 
